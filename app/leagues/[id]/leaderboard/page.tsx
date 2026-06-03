@@ -31,6 +31,12 @@ export default async function LeagueLeaderboardPage({
     data: { user },
   } = await supabase.auth.getUser()
 
+  const { data: league } = await supabase
+  .from('leagues')
+  .select('name')
+  .eq('id', id)
+  .single()
+
   const { data: leaderboard, error } = await supabase
     .from('league_leaderboard')
     .select('*')
@@ -65,10 +71,10 @@ export default async function LeagueLeaderboardPage({
               Ranking
             </p>
             <h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
-              {id}
+            {league?.name ?? id}
             </h1>
             <p className="text-sm text-neutral-400">
-              Posiciones de la liga
+            Posiciones de la liga
             </p>
           </div>
 

@@ -17,6 +17,7 @@ type League = {
   invite_code: string
   created_at: string
   owner_user_id: string
+  tournament_id: string
 }
 
 type Owner = {
@@ -42,7 +43,7 @@ export default async function LeaguePage({ params }: LeaguePageProps) {
 
   const { data: league, error: leagueError } = await supabase
     .from('leagues')
-    .select('id, name, invite_code, created_at, owner_user_id')
+    .select('id, name, invite_code, created_at, owner_user_id, tournament_id')
     .eq('id', id)
     .single<League>()
 
@@ -50,10 +51,16 @@ export default async function LeaguePage({ params }: LeaguePageProps) {
     notFound()
   }
 
-  const [{ data: membersCountData }, { data: owner }] = await Promise.all([
+  const [{ count: membersCount }, { data: owner }] =
+  await Promise.all([
     supabase
       .from('league_members')
-      .select('id', { count: 'exact', head: true }),
+      .select('id', {
+        count: 'exact',
+        head: true,
+      })
+      .eq('league_id', league.id),
+
     supabase
       .from('users')
       .select('display_name')
@@ -61,14 +68,54 @@ export default async function LeaguePage({ params }: LeaguePageProps) {
       .single<Owner>(),
   ])
 
-  const membersCount = membersCountData?.length ?? null
+  const startOfDay = new Date()
+  startOfDay.setHours(0, 0, 0, 0)
+  
+  const endOfDay = new Date()
+  endOfDay.setHours(23, 59, 59, 999)
+  
+  const { data: todayMatches } = await supabase
+    .from('matches')
+    .select(`
+      id,
+      kickoff_at,
+      home_team:teams!home_team_id (
+        name
+      ),
+      away_team:teams!away_team_id (
+        name
+      )
+    `)
+    .eq('tournament_id', league.tournament_id)
+    .gte('kickoff_at', startOfDay.toISOString())
+    .lte('kickoff_at', endOfDay.toISOString())
+    .order('kickoff_at')
+
+
+
+
+
+// const membersCount = membersCountData?.length ?? null
 
   const ownerName =
     owner?.display_name && owner.display_name.trim().length > 0
       ? owner.display_name
       : 'Anónimo'
 
-  //const tabs = ['Overview', 'Matches', 'Ranking', 'Members'] as const
+      const { data: topRanking } = await supabase
+      .from('league_leaderboard')
+      .select(`
+        user_id,
+        display_name,
+        total_points
+      `)
+      .eq('league_id', league.id)
+      .order('total_points', {
+        ascending: false,
+      })
+      .limit(3)
+
+
 
 const tabs = [
   {
@@ -85,7 +132,7 @@ const tabs = [
   },
   {
     label: 'Members',
-    href: '#',
+    href: `/leagues/${league.id}/members`,
   },
 ]
 
@@ -202,23 +249,93 @@ const tabs = [
           </Card>
 
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-            <Card className="bg-neutral-950/80 text-neutral-50 ring-neutral-800">
-              <CardHeader>
-                <CardTitle className="text-sm">Partidos</CardTitle>
-                <CardDescription className="text-[11px]">
-                  Próximamente podrás ver y gestionar los partidos desde aquí.
-                </CardDescription>
-              </CardHeader>
-            </Card>
+          <Card className="bg-neutral-950/80 text-neutral-50 ring-neutral-800">
+  <CardHeader>
+    <CardTitle className="text-sm">
+      Partidos de hoy
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="space-y-3">
+    {!todayMatches?.length ? (
+      <p className="text-xs text-neutral-500">
+        No hay partidos programados para hoy.
+      </p>
+    ) : (
+      todayMatches.slice(0, 3).map((match: any) => (
+        <div
+          key={match.id}
+          className="flex items-center justify-between"
+        >
+          <div className="text-sm">
+            {match.home_team?.name}
+            {' vs '}
+            {match.away_team?.name}
+          </div>
+
+          <div className="text-xs text-neutral-400">
+            {new Date(match.kickoff_at).toLocaleTimeString(
+              'es-CO',
+              {
+                timeZone: 'America/Bogota',
+                hour: '2-digit',
+                minute: '2-digit',
+              }
+            )}
+          </div>
+        </div>
+      ))
+    )}
+
+    <Link
+      href={`/leagues/${league.id}/matches`}
+      className="block pt-2 text-xs text-neutral-400 hover:text-neutral-200"
+    >
+      Ver todos los partidos →
+    </Link>
+  </CardContent>
+</Card>
 
             <Card className="bg-neutral-950/80 text-neutral-50 ring-neutral-800">
-              <CardHeader>
-                <CardTitle className="text-sm">Ranking</CardTitle>
-                <CardDescription className="text-[11px]">
-                  Pronto verás la tabla de posiciones de tu liga.
-                </CardDescription>
-              </CardHeader>
-            </Card>
+  <CardHeader>
+    <CardTitle className="text-sm">
+      Top Ranking
+    </CardTitle>
+  </CardHeader>
+
+  <CardContent className="space-y-3">
+    {!topRanking?.length ? (
+      <p className="text-xs text-neutral-500">
+        No hay puntuaciones todavía.
+      </p>
+    ) : (
+      topRanking.map((player, index) => (
+        <div
+          key={player.user_id}
+          className="flex items-center justify-between"
+        >
+          <span className="text-sm">
+            {index === 0 && '🥇 '}
+            {index === 1 && '🥈 '}
+            {index === 2 && '🥉 '}
+            {player.display_name}
+          </span>
+
+          <span className="text-emerald-400 font-semibold">
+            {player.total_points} pts
+          </span>
+        </div>
+      ))
+    )}
+
+    <Link
+      href={`/leagues/${league.id}/leaderboard`}
+      className="block pt-2 text-xs text-neutral-400 hover:text-neutral-200"
+    >
+      Ver ranking completo →
+    </Link>
+  </CardContent>
+</Card>
           </div>
         </section>
       </div>
