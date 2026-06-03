@@ -81,7 +81,7 @@ const tabs = [
   },
   {
     label: 'Ranking',
-    href: '#',
+    href: `/leagues/${league.id}/leaderboard`,
   },
   {
     label: 'Members',

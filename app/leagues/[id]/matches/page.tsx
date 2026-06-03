@@ -160,15 +160,46 @@ if (dbUserId) {
     .select(`
       match_id,
       predicted_home_score,
-      predicted_away_score
+      predicted_away_score,
+          prediction_scores (
+      total_points,
+      explanation
+    ),
+
+    match:matches (
+      match_results (
+        home_score,
+        away_score
+      )
+    )
     `)
     .eq('league_id', league.id)
     .eq('user_id', dbUserId)
 
+    console.log(
+      'PREDICTION SAMPLE',
+      JSON.stringify(predictions, null, 2)
+    )
+
   predictionsMap = new Map(
     (predictions ?? []).map((prediction) => [
       prediction.match_id,
-      prediction,
+      {
+        predicted_home_score: prediction.predicted_home_score,
+        predicted_away_score: prediction.predicted_away_score,
+  
+        total_points:
+          (prediction as any).prediction_scores?.total_points ?? null,
+  
+        explanation:
+        (prediction as any).prediction_scores?.explanation ?? null,
+  
+        official_home_score:
+        (prediction as any).match?.match_results?.home_score ?? null,
+  
+        official_away_score:
+        (prediction as any).match?.match_results?.away_score ?? null,
+      },
     ])
   )
 }
@@ -223,9 +254,13 @@ if (dbUserId) {
               const home = unwrapTeam(match.home_team)
               const away = unwrapTeam(match.away_team)
               const state = getMatchState(match.status, match.kickoff_at)
-const existingPrediction =predictionsMap.get(match.id)
+              const existingPrediction =predictionsMap.get(match.id)
 
-
+              console.log(
+                'MATCH',
+                match.id,
+                existingPrediction
+              )
 
               return (
                 <li key={match.id}> 
@@ -238,6 +273,10 @@ const existingPrediction =predictionsMap.get(match.id)
                    isLocked={state === 'locked'} 
                    initialHomeScore={existingPrediction?.predicted_home_score ?? null}
                    initialAwayScore={existingPrediction?.predicted_away_score ?? null}
+                   officialHomeScore={existingPrediction?.official_home_score ?? null}
+                   officialAwayScore={existingPrediction?.official_away_score ?? null}
+                   totalPoints={existingPrediction?.total_points ?? null}
+                   explanation={existingPrediction?.explanation ?? null}
 
                     />
                 </li>

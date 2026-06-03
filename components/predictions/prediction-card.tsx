@@ -25,6 +25,10 @@ export type PredictionCardProps = {
   isLocked: boolean
   initialHomeScore?: number | null
   initialAwayScore?: number | null
+  officialHomeScore?: number | null
+  officialAwayScore?: number | null
+  totalPoints?: number | null
+  explanation?: string | null
 }
 
 
@@ -61,6 +65,10 @@ export function PredictionCard({
   isLocked,
   initialHomeScore,
   initialAwayScore,
+  officialHomeScore,
+  officialAwayScore,
+  totalPoints,
+  explanation,
 }: PredictionCardProps) {
   const supabase = createClient()
 
@@ -73,6 +81,8 @@ export function PredictionCard({
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [success, setSuccess] = useState(false)
+
+  const [showExplanation, setShowExplanation] = useState(false)
 
   const handleSave = async () => {
     if (isLocked) return
@@ -138,6 +148,14 @@ export function PredictionCard({
       setLoading(false)
     }
   }
+
+  console.log('CARD DATA', {
+    officialHomeScore,
+    officialAwayScore,
+    totalPoints,
+    explanation,
+  })
+
 
   return (
     <Card className="rounded-2xl bg-gradient-to-b from-neutral-900/80 to-neutral-950/90 text-neutral-50 ring-neutral-800">
@@ -238,28 +256,88 @@ export function PredictionCard({
             Las predicciones están cerradas para este partido.
           </p>
         ) : null}
+
+{officialHomeScore !== null &&
+ officialAwayScore !== null ? (
+  <div className="rounded-xl border border-neutral-800 bg-neutral-900/60 p-3">
+    <p className="text-xs font-medium uppercase tracking-wide text-neutral-400">
+      Resultado oficial
+    </p>
+
+    <div className="mt-2 flex items-center justify-between">
+  <p className="text-2xl font-semibold text-neutral-100">
+    {officialHomeScore} — {officialAwayScore}
+  </p>
+
+  {totalPoints !== null ? (
+  <p
+    className={`text-lg font-semibold ${
+      Number(totalPoints) > 0
+        ? 'text-emerald-400'
+        : 'text-neutral-400'
+    }`}
+  >
+    {Number(totalPoints) > 0 ? '+' : ''}
+    {totalPoints} pts
+  </p>
+) : null}
+
+</div>
+
+<button
+  type="button"
+  onClick={() => setShowExplanation(!showExplanation)}
+  className="mt-2 text-xs text-neutral-400 hover:text-neutral-200"
+>
+  {showExplanation ? 'Ocultar puntuación ▲' : 'Ver puntuación ▼'}
+</button>
+
+{showExplanation && explanation ? (
+  <div className="mt-3 space-y-1 text-xs text-neutral-300">
+    {explanation
+      .replaceAll('\\n', '\n')
+      .split('\n')
+      .filter(Boolean)
+      .map((line) => (
+        <p key={line}>{line}</p>
+      ))}
+  </div>
+) : null}
+    
+  </div>
+) : null}
+
+
+
+
+
+
+
       </CardContent>
 
       <CardFooter className="flex flex-col gap-2 border-t border-neutral-800/80 pt-4">
-        <Button
-          type="button"
-          onClick={handleSave}
-          disabled={isLocked || loading}
-          className="h-11 w-full rounded-xl text-sm font-semibold"
-        >
-          {loading ? 'Guardando...' : 'Guardar predicción'}
-        </Button>
 
-        {success ? (
-          <p className="text-center text-xs font-medium text-emerald-300">
-            Predicción guardada correctamente.
-          </p>
-        ) : null}
+{!isLocked ? (
+  <Button
+    type="button"
+    onClick={handleSave}
+    disabled={loading}
+    className="h-11 w-full rounded-xl text-sm font-semibold"
+  >
+    {loading ? 'Guardando...' : 'Guardar predicción'}
+  </Button>
+) : null}
 
-        {error ? (
-          <p className="text-center text-xs text-red-300">{error}</p>
-        ) : null}
-      </CardFooter>
+{success ? (
+  <p className="text-center text-xs font-medium text-emerald-300">
+    Predicción guardada correctamente.
+  </p>
+) : null}
+
+{error ? (
+  <p className="text-center text-xs text-red-300">{error}</p>
+) : null}
+</CardFooter>
     </Card>
   )
 }
