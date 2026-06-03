@@ -148,33 +148,38 @@ export default async function DashboardPage() {
           <ul className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
             {leagues.map((league) => (
               <li key={league.id}>
-                <article className="flex h-full flex-col rounded-2xl border border-neutral-200/80 bg-white p-6 shadow-sm transition hover:border-neutral-300 hover:shadow-md dark:border-neutral-800 dark:bg-neutral-900 dark:hover:border-neutral-700">
-                  <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
-                    {league.name}
-                  </h2>
+                <Link
+                  href={`/leagues/${league.id}`}
+                  className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950"
+                >
+                  <article className="flex h-full flex-col rounded-2xl border border-neutral-200/80 bg-white p-6 shadow-sm transition duration-200 group-hover:-translate-y-0.5 group-hover:border-neutral-300 group-hover:shadow-md group-active:translate-y-0 group-active:shadow-sm dark:border-neutral-800 dark:bg-neutral-900 dark:group-hover:border-neutral-700">
+                    <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
+                      {league.name}
+                    </h2>
 
-                  <dl className="mt-5 flex flex-1 flex-col gap-4 text-sm">
-                    <div>
-                      <dt className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-                        Código de invitación
-                      </dt>
-                      <dd className="mt-1 font-mono text-base font-semibold tracking-wider text-emerald-700 dark:text-emerald-400">
-                        {league.invite_code}
-                      </dd>
-                    </div>
+                    <dl className="mt-5 flex flex-1 flex-col gap-4 text-sm">
+                      <div>
+                        <dt className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+                          Código de invitación
+                        </dt>
+                        <dd className="mt-1 font-mono text-base font-semibold tracking-wider text-emerald-700 dark:text-emerald-400">
+                          {league.invite_code}
+                        </dd>
+                      </div>
 
-                    <div>
-                      <dt className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-                        Creado
-                      </dt>
-                      <dd className="mt-1 text-neutral-700 dark:text-neutral-300">
-                        <time dateTime={league.created_at}>
-                          {formatCreatedAt(league.created_at)}
-                        </time>
-                      </dd>
-                    </div>
-                  </dl>
-                </article>
+                      <div>
+                        <dt className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
+                          Creado
+                        </dt>
+                        <dd className="mt-1 text-neutral-700 dark:text-neutral-300">
+                          <time dateTime={league.created_at}>
+                            {formatCreatedAt(league.created_at)}
+                          </time>
+                        </dd>
+                      </div>
+                    </dl>
+                  </article>
+                </Link>
               </li>
             ))}
           </ul>
