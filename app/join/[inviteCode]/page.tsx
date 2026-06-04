@@ -111,6 +111,9 @@ export default async function JoinLeaguePage({ params }: JoinPageProps) {
     }
   }
 
+  console.log('PAGE inviteCode:', inviteCode)
+  console.log('LEAGUE invite_code:', league.invite_code)
+
   return (
     <main className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-950 to-neutral-900 text-neutral-50">
       <div className="mx-auto flex w-full max-w-5xl flex-col gap-6 px-4 pb-12 pt-8 sm:px-6 lg:px-8">
@@ -190,6 +193,7 @@ export default async function JoinLeaguePage({ params }: JoinPageProps) {
               <JoinLeagueButton
                 leagueId={league.id}
                 alreadyJoined={alreadyJoined}
+                inviteCode={inviteCode}
                 isAuthed={isAuthed}
               />
 

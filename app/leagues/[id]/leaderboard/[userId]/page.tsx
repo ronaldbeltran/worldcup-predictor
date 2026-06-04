@@ -278,7 +278,7 @@ export default async function UserScoreDetailPage({
             <div className="mt-2">
               {!prediction?.explanation ? (
                 <p className="text-xs text-neutral-500">
-                  No realizó pronóstico para este partido.
+                 
                 </p>
               ) : (
                 <details>

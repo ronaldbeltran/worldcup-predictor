@@ -1,19 +1,35 @@
 'use client'
 
 import { createClient } from '@/lib/supabase/client'
+import { useSearchParams } from 'next/navigation'
+
 
 export default function LoginPage() {
   const supabase = createClient()
 
   const handleGoogleLogin = async () => {
+
+  
+
+
+    sessionStorage.setItem(
+      'post_login_redirect',
+      next
+    )
+
+
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
         redirectTo:
-          'http://localhost:3000/auth/callback',
+        `${window.location.origin}/auth/callback`,
       },
     })
   }
+  const searchParams = useSearchParams()
+
+  const next =
+    searchParams.get('next') ?? '/dashboard'
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-950 to-neutral-900 text-neutral-50">

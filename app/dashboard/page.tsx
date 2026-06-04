@@ -1,6 +1,8 @@
 import Link from 'next/link'
 import { redirect } from 'next/navigation'
 import { createClient } from '@/lib/supabase/server'
+import PostLoginRedirect from '@/components/post-login-redirect'
+import SignOutButton from '@/components/sign-out-button'
 
 type League = {
   id: string
@@ -56,7 +58,7 @@ export default async function DashboardPage() {
 
   const { data: dbUser, error: userError } = await supabase
     .from('users')
-    .select('id')
+    .select('id ,display_name')
     .eq('auth_user_id', user.id)
     .single()
 
@@ -82,6 +84,9 @@ export default async function DashboardPage() {
 
   return (
     <main  className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-950 to-neutral-900 text-neutral-50">
+     
+     <PostLoginRedirect />
+
       <div className="container mx-auto space-y-6 py-6">
         <header className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
@@ -98,12 +103,24 @@ export default async function DashboardPage() {
 </p>
           </div>
 
+          <div className="flex items-center gap-4">
           <Link
-            href="/leagues/create"
-            className="inline-flex shrink-0 items-center justify-center rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-neutral-900 dark:bg-neutral-100 dark:text-neutral-900 dark:hover:bg-white dark:focus-visible:outline-neutral-100"
-          >
-            Crear Torneo
-          </Link>
+  href="/leagues/create"
+  className="inline-flex shrink-0 items-center justify-center rounded-xl bg-neutral-900 px-5 py-3 text-sm font-semibold text-white shadow-sm transition hover:bg-neutral-800"
+>
+  Crear Torneo
+</Link>
+<div className="text-right">
+  <p className="text-sm font-medium text-neutral-200">
+    {dbUser.display_name}
+  </p>
+
+  <SignOutButton />
+</div>
+
+
+
+</div>
         </header>
 
         {leaguesError ? (

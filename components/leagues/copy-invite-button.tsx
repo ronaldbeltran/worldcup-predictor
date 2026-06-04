@@ -15,13 +15,16 @@ export function CopyInviteButton({
 
   const handleCopy = async () => {
 
-    await navigator.clipboard.writeText(inviteCode)
+    const inviteUrl =
+    `${window.location.origin}/join/${inviteCode}`
 
-    setCopied(true)
+  await navigator.clipboard.writeText(inviteUrl)
 
-    setTimeout(() => {
-      setCopied(false)
-    }, 2000)
+  setCopied(true)
+
+  setTimeout(() => {
+    setCopied(false)
+  }, 2000)
   }
 
   return (
@@ -31,7 +34,7 @@ export function CopyInviteButton({
       className="w-full"
     >
       {copied
-        ? 'Copied!'
+        ? 'Link Copied!'
         : 'Copy Invite Code'}
     </Button>
   )

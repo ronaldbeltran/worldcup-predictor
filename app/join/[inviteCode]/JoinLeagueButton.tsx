@@ -12,10 +12,12 @@ export default function JoinLeagueButton({
   leagueId,
   alreadyJoined,
   isAuthed,
+  inviteCode,
 }: {
   leagueId: string
   alreadyJoined: boolean
   isAuthed: boolean
+  inviteCode: string
 }) {
 
   const router = useRouter()
@@ -101,14 +103,15 @@ export default function JoinLeagueButton({
       setLoading(false)
     }
   }
-
+  console.log('JOIN BUTTON inviteCode:', inviteCode)
+  
   if (!isAuthed) {
 
     return (
       <div className="space-y-3">
 
         <Button asChild className="w-full rounded-xl">
-          <Link href="/login">
+        <Link href={`/login?next=/join/${inviteCode}`}>
             Iniciar sesión para unirme
           </Link>
         </Button>
@@ -133,7 +136,15 @@ export default function JoinLeagueButton({
         <p className="text-center text-xs text-emerald-300/90">
           Ya eres miembro de esta liga.
         </p>
-
+        <Button
+        asChild
+        variant="secondary"
+        className="w-full rounded-xl"
+      >
+        <Link href="/dashboard">
+          Ir al dashboard
+        </Link>
+      </Button>
       </div>
     )
   }
