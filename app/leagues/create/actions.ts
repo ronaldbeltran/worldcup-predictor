@@ -11,8 +11,36 @@ export type CreateLeagueResult = {
   success?: boolean
 }
 
-export async function createLeague(name: string): Promise<CreateLeagueResult> {
-  const leagueName = name.trim()
+type CreateLeagueInput = {
+  name: string
+  description: string
+  tournamentId: string
+}
+
+export async function getTournaments() {
+  const supabase = await createClient()
+
+  const { data, error } = await supabase
+    .from('tournaments')
+    .select(`
+      id,
+      name
+    `)
+    .eq('is_active', true)
+    .order('start_date')
+
+  if (error) {
+    console.error(error)
+    return []
+  }
+
+  return data ?? []
+}
+
+
+export async function createLeague(input: CreateLeagueInput): Promise<CreateLeagueResult> {
+  const leagueName = input.name.trim()
+  const description = input.description.trim()
 
   if (!leagueName) {
     return { error: 'El nombre del torneo es obligatorio.' }
@@ -45,9 +73,10 @@ export async function createLeague(name: string): Promise<CreateLeagueResult> {
     .from('leagues')
     .insert({
       name: leagueName,
+      description:description || null,
       owner_user_id: dbUser.id,
       invite_code: inviteCode,
-      tournament_id: '007bfd09-5f91-4625-8682-63c660024d7e'
+      tournament_id: input.tournamentId
     })
     .select('id')
     .single<{ id: string }>()
