@@ -147,6 +147,13 @@ const tabs = [
       <div className="mx-auto flex w-full max-w-4xl flex-col px-4 pb-10 pt-8 sm:px-6 lg:px-8">
         <header className="space-y-4">
           <div className="space-y-2">
+          <Link
+            href={`/dashboard`}
+            className="inline-flex items-center gap-1.5 text-xs font-medium text-neutral-400 transition hover:text-neutral-200"
+          >
+            <span aria-hidden>←</span>
+            Volver al dashboard
+          </Link>
             <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400/90">
               Liga
             </p>

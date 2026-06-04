@@ -37,6 +37,17 @@ export default async function LeagueLeaderboardPage({
   .eq('id', id)
   .single()
 
+  const {
+    data: { user: authUser },
+  } = await supabase.auth.getUser()
+  
+  const { data: dbUser } = await supabase
+    .from('users')
+    .select('id')
+    .eq('auth_user_id', authUser?.id)
+    .single()
+
+
   const { data: leaderboard, error } = await supabase
     .from('league_leaderboard')
     .select('*')
@@ -104,17 +115,18 @@ export default async function LeagueLeaderboardPage({
                           : `#${index + 1}`
 
                   const isCurrentUser =
-                    user?.id === row.user_id
+                    dbUser?.id === row.user_id
 
                   return (
-                    <div
-                      key={row.user_id}
-                      className={`flex items-center justify-between rounded-xl border p-4 transition-colors ${
-                        isCurrentUser
-                          ? 'border-emerald-500/60 bg-emerald-500/10'
-                          : 'border-neutral-800 bg-neutral-900/70'
-                      }`}
-                    >
+                    <Link
+                    key={row.user_id}
+                    href={`/leagues/${id}/leaderboard/${row.user_id}`}
+                    className={`flex items-center justify-between rounded-xl border p-4 transition-colors hover:border-emerald-500/40 ${
+                      isCurrentUser
+                        ? 'border-emerald-500/60 bg-emerald-500/10'
+                        : 'border-neutral-800 bg-neutral-900/70'
+                    }`}
+                  >
                       <div className="flex items-center gap-4">
                         <div className="w-8 text-lg font-bold text-neutral-400">
                           {rankLabel}
@@ -148,7 +160,7 @@ export default async function LeagueLeaderboardPage({
                           </span>
                         </p>
                       </div>
-                    </div>
+                    </Link>
                   )
                 }
               )}

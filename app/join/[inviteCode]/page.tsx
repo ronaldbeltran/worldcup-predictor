@@ -15,6 +15,7 @@ type League = {
   invite_code: string
   owner_user_id: string
   created_at: string
+  description: string
 }
 
 type UserRow = {
@@ -41,7 +42,7 @@ export default async function JoinLeaguePage({ params }: JoinPageProps) {
 
   const { data: league, error: leagueError } = await supabase
     .from('leagues')
-    .select('id, name, invite_code, owner_user_id, created_at')
+    .select('id, name, invite_code, owner_user_id, created_at, description')
     .eq('invite_code', inviteCode)
     .single<League>()
 
@@ -130,7 +131,7 @@ export default async function JoinLeaguePage({ params }: JoinPageProps) {
             <CardHeader className="border-b border-neutral-800/80 pb-4">
               <CardTitle className="text-base">Información de la liga</CardTitle>
               <CardDescription className="text-xs text-neutral-400">
-                Datos principales para confirmar el ingreso.
+              {league.description}
               </CardDescription>
             </CardHeader>
 

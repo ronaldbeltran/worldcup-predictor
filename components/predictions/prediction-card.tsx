@@ -15,6 +15,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
+import Link from 'next/link'
 
 export type PredictionCardProps = {
   leagueId: string
@@ -254,7 +255,16 @@ export function PredictionCard({
         {isLocked ? (
           <p className="text-center text-xs text-orange-300/90">
             Las predicciones están cerradas para este partido.
+            <Link
+    href={`/leagues/${leagueId}/matches/${matchId}`}
+    className="inline-flex text-xs text-emerald-400 hover:text-emerald-300"
+  >
+    Ver todos los pronósticos →
+  </Link>
           </p>
+          
+
+          
         ) : null}
 
 {officialHomeScore !== null &&

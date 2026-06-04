@@ -81,20 +81,21 @@ export default async function DashboardPage() {
   const leagues = extractLeagues(memberships as LeagueMemberRow[] | null)
 
   return (
-    <main className="min-h-screen bg-gradient-to-b from-neutral-50 to-neutral-100 dark:from-neutral-950 dark:to-neutral-900">
-      <div className="mx-auto max-w-6xl px-4 py-10 sm:px-6 lg:px-8">
+    <main  className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-950 to-neutral-900 text-neutral-50">
+      <div className="container mx-auto space-y-6 py-6">
         <header className="mb-10 flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
           <div>
-            <p className="text-sm font-medium text-emerald-600 dark:text-emerald-400">
-              Mundial 2026
-            </p>
-            <h1 className="mt-1 text-3xl font-bold tracking-tight text-neutral-900 dark:text-neutral-50 sm:text-4xl">
-              Mis Torneos
-            </h1>
-            <p className="mt-2 max-w-xl text-neutral-600 dark:text-neutral-400">
-              Tus ligas privadas. Comparte el código de invitación para que más
-              amigos se unan.
-            </p>
+          <p className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-400/90">
+  Mundial 2026
+</p>
+
+<h1 className="text-2xl font-semibold tracking-tight sm:text-3xl">
+  Mis ligas
+</h1>
+
+<p className="text-sm text-neutral-400">
+  Gestiona tus ligas y accede rápidamente a los pronósticos.
+</p>
           </div>
 
           <Link
@@ -130,7 +131,7 @@ export default async function DashboardPage() {
                 />
               </svg>
             </div>
-            <h2 className="mt-5 text-lg font-semibold text-neutral-900 dark:text-neutral-50">
+            <h2 className="mt-5 text-lg font-semibold text-neutral-400 dark:text-neutral-50">
               Aún no tienes torneos
             </h2>
             <p className="mx-auto mt-2 max-w-sm text-sm text-neutral-600 dark:text-neutral-400">
@@ -152,32 +153,30 @@ export default async function DashboardPage() {
                   href={`/leagues/${league.id}`}
                   className="group block h-full rounded-2xl focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500/60 focus-visible:ring-offset-2 focus-visible:ring-offset-neutral-50 dark:focus-visible:ring-offset-neutral-950"
                 >
-                  <article className="flex h-full flex-col rounded-2xl border border-neutral-200/80 bg-white p-6 shadow-sm transition duration-200 group-hover:-translate-y-0.5 group-hover:border-neutral-300 group-hover:shadow-md group-active:translate-y-0 group-active:shadow-sm dark:border-neutral-800 dark:bg-neutral-900 dark:group-hover:border-neutral-700">
-                    <h2 className="text-lg font-semibold text-neutral-900 dark:text-neutral-50">
+                  <article className="lex h-full flex-col rounded-xl border border-neutral-800 bg-neutral-900/70 p-4 transition-colors hover:border-emerald-500/40">
+                    <h2 className="text-2xl font-semibold tracking-tight sm:text-2xl">
                       {league.name}
                     </h2>
 
-                    <dl className="mt-5 flex flex-1 flex-col gap-4 text-sm">
-                      <div>
+  
+
+                        <div className="mt-4 space-y-2 text-sm">
                         <dt className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
                           Código de invitación
                         </dt>
-                        <dd className="mt-1 font-mono text-base font-semibold tracking-wider text-emerald-700 dark:text-emerald-400">
-                          {league.invite_code}
-                        </dd>
-                      </div>
+  <p className="font-mono font-semibold tracking-wider text-emerald-400">
+    {league.invite_code}
+  </p>
 
-                      <div>
-                        <dt className="text-xs font-medium uppercase tracking-wide text-neutral-500 dark:text-neutral-400">
-                          Creado
-                        </dt>
-                        <dd className="mt-1 text-neutral-700 dark:text-neutral-300">
-                          <time dateTime={league.created_at}>
-                            {formatCreatedAt(league.created_at)}
-                          </time>
-                        </dd>
-                      </div>
-                    </dl>
+  <p className="text-neutral-400">
+    Creada{' '}
+    {formatCreatedAt(
+      league.created_at
+    )}
+  </p>
+</div>
+
+
                   </article>
                 </Link>
               </li>
