@@ -150,12 +150,7 @@ export function PredictionCard({
     }
   }
 
-  console.log('CARD DATA', {
-    officialHomeScore,
-    officialAwayScore,
-    totalPoints,
-    explanation,
-  })
+
 
 
   return (

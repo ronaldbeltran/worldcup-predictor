@@ -1,7 +1,7 @@
 'use client'
-export const dynamic = 'force-dynamic'
+//export const dynamic = 'force-dynamic'
 import { createClient } from '@/lib/supabase/client'
-import { useSearchParams } from 'next/navigation'
+//import { useSearchParams } from 'next/navigation'
 
 
 export default function LoginPage() {
@@ -9,7 +9,9 @@ export default function LoginPage() {
 
   const handleGoogleLogin = async () => {
 
-  
+    const next =
+    new URLSearchParams(window.location.search)
+      .get('next') ?? '/dashboard'
 
 
     sessionStorage.setItem(
@@ -26,10 +28,9 @@ export default function LoginPage() {
       },
     })
   }
-  const searchParams = useSearchParams()
+  //const searchParams = useSearchParams()
 
-  const next =
-    searchParams.get('next') ?? '/dashboard'
+  //const next =searchParams.get('next') ?? '/dashboard'
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-950 to-neutral-900 text-neutral-50">

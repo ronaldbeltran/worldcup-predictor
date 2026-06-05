@@ -176,10 +176,6 @@ if (dbUserId) {
     .eq('league_id', league.id)
     .eq('user_id', dbUserId)
 
-    console.log(
-      'PREDICTION SAMPLE',
-      JSON.stringify(predictions, null, 2)
-    )
 
   predictionsMap = new Map(
     (predictions ?? []).map((prediction) => [

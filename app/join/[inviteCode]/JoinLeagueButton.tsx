@@ -103,7 +103,7 @@ export default function JoinLeagueButton({
       setLoading(false)
     }
   }
-  console.log('JOIN BUTTON inviteCode:', inviteCode)
+ 
   
   if (!isAuthed) {
 

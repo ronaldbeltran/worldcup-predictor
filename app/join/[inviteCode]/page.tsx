@@ -111,8 +111,7 @@ export default async function JoinLeaguePage({ params }: JoinPageProps) {
     }
   }
 
-  console.log('PAGE inviteCode:', inviteCode)
-  console.log('LEAGUE invite_code:', league.invite_code)
+
 
   return (
     <main className="min-h-screen bg-gradient-to-b from-neutral-950 via-neutral-950 to-neutral-900 text-neutral-50">
