@@ -23,7 +23,7 @@ export const DEFAULT_SCORING_BY_STAGE: Record<ScoringStage, ScoringRuleValues> =
   group: {
     exact_score_points: 5,
     winner_points: 3,
-    draw_points: 1,
+    draw_points: 3,
     goal_difference_points: 2,
     home_goals_points: 1,
     away_goals_points: 1,
@@ -31,7 +31,7 @@ export const DEFAULT_SCORING_BY_STAGE: Record<ScoringStage, ScoringRuleValues> =
   round_16: {
     exact_score_points: 6,
     winner_points: 4,
-    draw_points: 1,
+    draw_points: 4,
     goal_difference_points: 2,
     home_goals_points: 1,
     away_goals_points: 1,
@@ -40,7 +40,7 @@ export const DEFAULT_SCORING_BY_STAGE: Record<ScoringStage, ScoringRuleValues> =
   round_32: {
     exact_score_points: 7,
     winner_points: 4,
-    draw_points: 2,
+    draw_points: 4,
     goal_difference_points: 2,
     home_goals_points: 1,
     away_goals_points: 1,
@@ -48,7 +48,7 @@ export const DEFAULT_SCORING_BY_STAGE: Record<ScoringStage, ScoringRuleValues> =
   quarterfinal: {
     exact_score_points: 7,
     winner_points: 4,
-    draw_points: 2,
+    draw_points: 4,
     goal_difference_points: 2,
     home_goals_points: 1,
     away_goals_points: 1,
@@ -56,7 +56,7 @@ export const DEFAULT_SCORING_BY_STAGE: Record<ScoringStage, ScoringRuleValues> =
   semifinal: {
     exact_score_points: 8,
     winner_points: 5,
-    draw_points: 2,
+    draw_points: 5,
     goal_difference_points: 3,
     home_goals_points: 1,
     away_goals_points: 1,
@@ -64,7 +64,7 @@ export const DEFAULT_SCORING_BY_STAGE: Record<ScoringStage, ScoringRuleValues> =
   third_place: {
     exact_score_points: 8,
     winner_points: 5,
-    draw_points: 2,
+    draw_points: 5,
     goal_difference_points: 3,
     home_goals_points: 1,
     away_goals_points: 1,
@@ -72,7 +72,7 @@ export const DEFAULT_SCORING_BY_STAGE: Record<ScoringStage, ScoringRuleValues> =
   final: {
     exact_score_points: 10,
     winner_points: 5,
-    draw_points: 3,
+    draw_points: 5,
     goal_difference_points: 3,
     home_goals_points: 2,
     away_goals_points: 2,

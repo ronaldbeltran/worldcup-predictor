@@ -136,7 +136,7 @@ export function PredictionCard({
       )
 
       if (upsertError) {
-        setError('No se pudo guardar la predicción. Intenta de nuevo.')
+        setError('No se pudo guardar la predicción. Valida la fecha limite e Intenta de nuevo.')
         return
       }
 

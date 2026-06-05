@@ -134,6 +134,10 @@ const tabs = [
     label: 'Members',
     href: `/leagues/${league.id}/members`,
   },
+  {
+    label: 'Rules',
+    href: `/leagues/${league.id}/rules`,
+  },
 ]
 
 
