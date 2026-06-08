@@ -216,6 +216,12 @@ const tabs = [
                   </CardTitle>
                   <CardDescription className="mt-1 text-[11px] text-neutral-400">
                     Resumen rápido de tu liga.
+                    <Link
+        href={`/leagues/${league.id}/rules`}
+      className="block pt-1 text-[11px] text-neutral-400 hover:text-neutral-200"
+    >
+      Ver sistema de puntuaciones →
+    </Link>
                   </CardDescription>
                 </div>
                 <CopyInviteButton inviteCode={league.invite_code} />

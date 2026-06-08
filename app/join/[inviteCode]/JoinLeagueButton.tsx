@@ -110,7 +110,7 @@ export default function JoinLeagueButton({
     return (
       <div className="space-y-3">
 
-        <Button asChild className="w-full rounded-xl">
+        <Button asChild className="w-full rounded-xl text-emerald-400/90">
         <Link href={`/login?next=/join/${inviteCode}`}>
             Iniciar sesión para unirme
           </Link>
@@ -155,7 +155,7 @@ export default function JoinLeagueButton({
       <Button
         onClick={handleJoinLeague}
         disabled={loading}
-        className="w-full rounded-xl"
+        className="w-full rounded-xl text-emerald-400/90"
       >
         {loading
           ? 'Uniéndote...'

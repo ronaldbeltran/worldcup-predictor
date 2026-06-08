@@ -209,6 +209,7 @@ export default function CreateLeaguePage() {
     <p className="text-sm text-neutral-400">
       Estas reglas se aplicarán automáticamente
       a la liga al momento de crearla.
+      Los pronosticos se cierran 5 Minutos antes de iniciar el partido Zona horaria Colombia
     </p>
   </div>
 
