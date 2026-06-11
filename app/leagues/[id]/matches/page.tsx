@@ -252,11 +252,7 @@ if (dbUserId) {
               const state = getMatchState(match.status, match.kickoff_at)
               const existingPrediction =predictionsMap.get(match.id)
 
-              console.log(
-                'MATCH',
-                match.id,
-                existingPrediction
-              )
+
 
               return (
                 <li key={match.id}> 

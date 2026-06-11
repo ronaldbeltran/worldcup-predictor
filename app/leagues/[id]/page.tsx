@@ -73,6 +73,10 @@ export default async function LeaguePage({ params }: LeaguePageProps) {
   
   const endOfDay = new Date()
   endOfDay.setHours(23, 59, 59, 999)
+
+  const endOfTomorrow = new Date()
+endOfTomorrow.setDate(endOfTomorrow.getDate() + 1)
+endOfTomorrow.setHours(23, 59, 59, 999)
   
   const { data: todayMatches } = await supabase
     .from('matches')
@@ -88,7 +92,7 @@ export default async function LeaguePage({ params }: LeaguePageProps) {
     `)
     .eq('tournament_id', league.tournament_id)
     .gte('kickoff_at', startOfDay.toISOString())
-    .lte('kickoff_at', endOfDay.toISOString())
+    .lte('kickoff_at', endOfTomorrow.toISOString())
     .order('kickoff_at')
 
 
@@ -269,7 +273,7 @@ const tabs = [
           <Card className="bg-neutral-950/80 text-neutral-50 ring-neutral-800">
   <CardHeader>
     <CardTitle className="text-sm">
-      Partidos de hoy
+      Proximos Partidos
     </CardTitle>
   </CardHeader>
 
