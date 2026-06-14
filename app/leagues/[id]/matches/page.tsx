@@ -91,10 +91,15 @@ type MatchesPageProps = {
   params: Promise<{
     id: string
   }>
+  searchParams: Promise<{
+    all?: string
+  }>
 }
 
-export default async function LeagueMatchesPage({ params }: MatchesPageProps) {
+export default async function LeagueMatchesPage({ params,searchParams }: MatchesPageProps) {
   const { id } = await params
+  const { all } = await searchParams
+  const showAll = all === 'true'
   const supabase = await createClient()
 
 
@@ -150,6 +155,30 @@ if (authUser) {
     .order('kickoff_at', { ascending: true })
 
   const matchList = (matches as MatchRow[] | null) ?? []
+
+
+
+  const yesterday = new Date()
+
+yesterday.setDate(yesterday.getDate() - 1)
+
+yesterday.setHours(0, 0, 0, 0)
+
+const activeMatches = matchList.filter(
+  (match) =>
+    new Date(match.kickoff_at) >= yesterday
+)
+
+const historicalMatches = matchList.filter(
+  (match) =>
+    new Date(match.kickoff_at) < yesterday
+)
+
+const matchesToShow = showAll
+  ? matchList
+  : activeMatches
+
+
 
 let predictionsMap = new Map()
 
@@ -245,8 +274,41 @@ if (dbUserId) {
             </CardHeader>
           </Card>
         ) : (
+          
+          <>
+          {historicalMatches.length > 0 && !showAll && (
+            <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/50 p-4">
+              <p className="text-sm text-neutral-300">
+                Mostrando {activeMatches.length} partidos desde ayer en adelante.
+              </p>
+      
+              <p className="mt-1 text-xs text-neutral-500">
+              {historicalMatches.length} partidos anteriores fueron ocultados para facilitar los pronósticos.
+
+              </p>
+              <Link
+      href={`/leagues/${league.id}/matches?all=true`}
+      className="mt-2 inline-block text-sm font-medium text-emerald-400 hover:text-emerald-300"
+    >
+      Ver todos los partidos
+    </Link>
+            </div>
+          )}
+
+
+{showAll && (
+  <div className="mt-6">
+    <Link
+      href={`/leagues/${league.id}/matches`}
+      className="text-sm font-medium text-emerald-400 hover:text-emerald-300"
+    >
+      Ocultar partidos históricos
+    </Link>
+  </div>
+)}
+      
           <ul className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 lg:gap-5">
-            {matchList.map((match) => {
+            {matchesToShow.map((match) => {
               const home = unwrapTeam(match.home_team)
               const away = unwrapTeam(match.away_team)
               const state = getMatchState(match.status, match.kickoff_at)
@@ -275,6 +337,7 @@ if (dbUserId) {
               )
             })}
           </ul>
+          </>
         )}
       </div>
     </main>
