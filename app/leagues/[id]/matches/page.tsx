@@ -160,7 +160,7 @@ if (authUser) {
 
   const yesterday = new Date()
 
-yesterday.setDate(yesterday.getDate() - 1)
+yesterday.setDate(yesterday.getDate() )
 
 yesterday.setHours(0, 0, 0, 0)
 
@@ -279,7 +279,7 @@ if (dbUserId) {
           {historicalMatches.length > 0 && !showAll && (
             <div className="mt-6 rounded-xl border border-neutral-800 bg-neutral-900/50 p-4">
               <p className="text-sm text-neutral-300">
-                Mostrando {activeMatches.length} partidos desde ayer en adelante.
+                Mostrando {activeMatches.length} partidos desde hoy en adelante.
               </p>
       
               <p className="mt-1 text-xs text-neutral-500">
