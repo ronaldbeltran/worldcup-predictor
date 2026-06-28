@@ -98,6 +98,9 @@ export default async function LeagueRulesPage({
     <p className="text-sm text-neutral-400">
       Recuerda que los pronosticos se cierran 5 Minutos antes de iniciar el partido Zona horaria Colombia
     </p>
+      <p className="text-sm text-neutral-400">
+      Los pronosticos toma el resultado de los 90 minutos mas minutos de adicion, NO incluye tiempos suplementarios o penales
+    </p>
   </div>
 
   <div className="overflow-x-auto">
